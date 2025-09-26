@@ -34,6 +34,7 @@ public class ContractService {
         this.repo.findTopByEmployeeOrderByStartDateDesc(employee).ifPresent(c -> {
             if (c.getEndDate() == null || c.getEndDate().isAfter(data.startDate())) {
                 c.setEndDate(data.startDate().minusDays(1));
+                c.setActive(false);
                 this.repo.save(c);
             }
         });
@@ -44,6 +45,7 @@ public class ContractService {
         newContract.setStartDate(data.startDate());
         newContract.setJobTitle(data.jobTitle());
         newContract.setSalary(data.salary());
+        newContract.setActive(true);
         if (data.endDate() != null) {
             newContract.setEndDate(data.endDate());
         }

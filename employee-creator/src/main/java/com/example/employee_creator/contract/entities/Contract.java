@@ -23,6 +23,8 @@ public class Contract extends BaseEntity {
     private LocalDate startDate;
     @Column
     private LocalDate endDate;
+    @Column
+    private boolean isActive;
 
     @ManyToOne
     private Employee employee;
@@ -76,6 +78,14 @@ public class Contract extends BaseEntity {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
 }

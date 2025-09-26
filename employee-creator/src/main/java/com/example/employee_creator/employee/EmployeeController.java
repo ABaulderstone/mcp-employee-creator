@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.employee_creator.employee.dtos.CreateEmployeeDto;
 import com.example.employee_creator.employee.dtos.EmployeeDto;
+import com.example.employee_creator.employee.dtos.EmployeeSearchFilterDto;
 import com.example.employee_creator.employee.entities.Employee;
 import com.example.employee_creator.common.PageResponseAssembler;
 import com.example.employee_creator.common.dtos.PageResponse;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
@@ -31,10 +33,9 @@ public class EmployeeController {
     }
 
     @GetMapping()
-    public ResponseEntity<PageResponse<EmployeeDto>> getEmployees(@RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        PageRequest pageable = PageRequest.of(page - 1, size);
-        Page<Employee> data = this.employeeService.findEmployees(pageable);
+    public ResponseEntity<PageResponse<EmployeeDto>> getEmployees(@ModelAttribute EmployeeSearchFilterDto filter) {
+        PageRequest pageable = PageRequest.of(filter.page() - 1, filter.size());
+        Page<Employee> data = this.employeeService.findEmployees(pageable, filter);
         PageResponse<EmployeeDto> pr = prAssembler.toPageResponse(data, EmployeeDto::fromEntity);
         return ResponseEntity.ok(pr);
 
