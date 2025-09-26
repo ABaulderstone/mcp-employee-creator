@@ -53,7 +53,7 @@ public class DevDataSeeder implements CommandLineRunner {
             CreateEmployeeDto dto = new CreateEmployeeDto(firstName, lastName, birthDate);
             Employee created = this.employeeService.create(dto);
             System.out.println("Seeded employee " + created.getEmail());
-            int deptIdx = faker.number().numberBetween(0, depts.size() - 1);
+            int deptIdx = faker.number().numberBetween(0, depts.size());
             Department dept = depts.get(deptIdx);
             seedCareer(created, dept);
         }
