@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.example.employee_creator.employee.dtos.CreateEmployeeDto;
@@ -55,6 +57,10 @@ public class EmployeeService {
 
     public long getCount() {
         return this.repo.count();
+    }
+
+    public Page<Employee> findEmployees(PageRequest pageable) {
+        return this.repo.findAll(pageable);
     }
 
 }
