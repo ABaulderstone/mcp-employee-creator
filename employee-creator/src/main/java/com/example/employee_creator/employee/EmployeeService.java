@@ -85,6 +85,15 @@ public class EmployeeService {
         return Optional.of(found);
     }
 
+    public boolean deleteById(Long id) {
+        Employee e = this.findById(id).orElse(null);
+        if (e == null) {
+            return false;
+        }
+        this.repo.delete(e);
+        return true;
+    }
+
     private String generateEmail(String firstName, String lastName) {
         String domain = "@example.com";
         String base = firstName.toLowerCase() + "." + lastName.toLowerCase();
