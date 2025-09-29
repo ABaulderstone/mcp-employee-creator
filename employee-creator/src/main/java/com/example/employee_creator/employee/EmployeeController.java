@@ -8,6 +8,9 @@ import com.example.employee_creator.employee.dtos.EmployeeDto;
 import com.example.employee_creator.employee.dtos.EmployeeSearchFilterDto;
 import com.example.employee_creator.employee.dtos.EnrichedEmployeeDto;
 import com.example.employee_creator.employee.entities.Employee;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.example.employee_creator.common.PageResponseAssembler;
 import com.example.employee_creator.common.dtos.PageResponse;
 
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/employees")
+@Tag(name = "Employees", description = "Employee management endpoints")
 public class EmployeeController {
     private final EmployeeService employeeService;
     private final PageResponseAssembler prAssembler;
