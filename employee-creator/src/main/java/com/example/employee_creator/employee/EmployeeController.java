@@ -7,6 +7,7 @@ import com.example.employee_creator.employee.dtos.CreateEmployeeDto;
 import com.example.employee_creator.employee.dtos.EmployeeDto;
 import com.example.employee_creator.employee.dtos.EmployeeSearchFilterDto;
 import com.example.employee_creator.employee.dtos.EnrichedEmployeeDto;
+import com.example.employee_creator.employee.dtos.UpdateEmployeeDto;
 import com.example.employee_creator.employee.entities.Employee;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,6 +19,9 @@ import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Optional;
+
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
@@ -60,6 +65,14 @@ public class EmployeeController {
                 .orElseThrow(() -> new BadRequestException("Could not find employee with id " + id));
         EnrichedEmployeeDto dto = EnrichedEmployeeDto.fromEntity(found);
         return ResponseEntity.ok(dto);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<EnrichedEmployeeDto> updateEmployeeById(@PathVariable Long id,
+            @Valid @RequestBody UpdateEmployeeDto data) throws BadRequestException {
+        Employee updated = this.employeeService.updateById(id, data)
+                .orElseThrow(() -> new BadRequestException("Could not find employee with id " + id));
+        return ResponseEntity.ok(EnrichedEmployeeDto.fromEntity(updated));
     }
 
 }

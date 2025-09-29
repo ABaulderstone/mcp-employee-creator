@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.employee_creator.employee.dtos.CreateEmployeeDto;
 import com.example.employee_creator.employee.dtos.EmployeeSearchFilterDto;
+import com.example.employee_creator.employee.dtos.UpdateEmployeeDto;
 import com.example.employee_creator.employee.entities.Employee;
+
+import jakarta.validation.Valid;
 
 @Service
 public class EmployeeService {
@@ -61,6 +64,27 @@ public class EmployeeService {
         return this.repo.findAll(spec, pageable);
     }
 
+    public Optional<Employee> updateById(Long id, UpdateEmployeeDto data) {
+        Employee found = this.findById(id).orElse(null);
+        if (found == null) {
+            return Optional.empty();
+        }
+        if (data.firstName() != null) {
+            found.setFirstName(data.firstName().trim());
+        }
+
+        if (data.lastName() != null) {
+            found.setLastName(data.lastName().trim());
+        }
+
+        if (data.dateOfBirth() != null) {
+            found.setDateOfBirth(data.dateOfBirth());
+        }
+        this.repo.saveAndFlush(found);
+
+        return Optional.of(found);
+    }
+
     private String generateEmail(String firstName, String lastName) {
         String domain = "@example.com";
         String base = firstName.toLowerCase() + "." + lastName.toLowerCase();
@@ -78,4 +102,5 @@ public class EmployeeService {
         return base + suffix + domain;
 
     }
+
 }
