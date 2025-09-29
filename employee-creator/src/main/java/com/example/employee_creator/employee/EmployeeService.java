@@ -39,24 +39,6 @@ public class EmployeeService {
         return this.repo.saveAndFlush(employee);
     }
 
-    private String generateEmail(String firstName, String lastName) {
-        String domain = "@example.com";
-        String base = firstName.toLowerCase() + "." + lastName.toLowerCase();
-        String email = base + domain;
-        List<Employee> existingEmployees = this.repo.findAllByEmailStartingWith(base);
-        Set<String> existingEmails = existingEmployees.stream().map(e -> e.getEmail()).collect(Collectors.toSet());
-        if (!existingEmails.contains(email)) {
-            return email;
-        }
-
-        int suffix = 2;
-        while (existingEmails.contains(base + suffix + domain)) {
-            suffix++;
-        }
-        return base + suffix + domain;
-
-    }
-
     public long getCount() {
         return this.repo.count();
     }
@@ -79,4 +61,21 @@ public class EmployeeService {
         return this.repo.findAll(spec, pageable);
     }
 
+    private String generateEmail(String firstName, String lastName) {
+        String domain = "@example.com";
+        String base = firstName.toLowerCase() + "." + lastName.toLowerCase();
+        String email = base + domain;
+        List<Employee> existingEmployees = this.repo.findAllByEmailStartingWith(base);
+        Set<String> existingEmails = existingEmployees.stream().map(e -> e.getEmail()).collect(Collectors.toSet());
+        if (!existingEmails.contains(email)) {
+            return email;
+        }
+
+        int suffix = 2;
+        while (existingEmails.contains(base + suffix + domain)) {
+            suffix++;
+        }
+        return base + suffix + domain;
+
+    }
 }
