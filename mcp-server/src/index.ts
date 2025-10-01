@@ -152,7 +152,7 @@ app.post('/chat', async (req: Request, res: Response) => {
     const toolsUsed: string[] = [];
 
     let response: Message = await anthropic.messages.create({
-      model: 'claude-3-5-sonnet-20241022',
+      model: 'claude-3-haiku-20240307',
       max_tokens: 4096,
       tools: TOOLS.map((tool) => ({
         name: tool.name,
@@ -211,7 +211,7 @@ app.post('/chat', async (req: Request, res: Response) => {
 
       // Continue conversation
       response = await anthropic.messages.create({
-        model: 'claude-3-5-sonnet-20241022',
+        model: 'claude-3-haiku-20240307',
         max_tokens: 4096,
         tools: TOOLS.map((tool) => ({
           name: tool.name,
