@@ -37,6 +37,8 @@ console.log(
   'ANTHROPIC_API_KEY:',
   process.env.ANTHROPIC_API_KEY ? 'Set' : 'Not set'
 );
+const systemPrompt =
+  'You are a helpful assistant that answers questions about employee data. You should be using tool calls wherever possible. Always check the glossary and infer the best SQL query based on that glossary term. For example promotions can be figured out by looking into contracts. Do not hallucinate data, provide data from queries. Answer questions directly and concisely. Never explain how you retrieved the information, what queries you ran, what tables you joined, or what tools you used.  Just provide the answer the user asked for in a single, clear, but friendly sentence.';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -154,6 +156,7 @@ app.post('/chat', async (req: Request, res: Response) => {
     let response: Message = await anthropic.messages.create({
       model: 'claude-3-haiku-20240307',
       max_tokens: 4096,
+      system: systemPrompt,
       tools: TOOLS.map((tool) => ({
         name: tool.name,
         description: tool.description,
@@ -213,6 +216,7 @@ app.post('/chat', async (req: Request, res: Response) => {
       response = await anthropic.messages.create({
         model: 'claude-3-haiku-20240307',
         max_tokens: 4096,
+        system: systemPrompt,
         tools: TOOLS.map((tool) => ({
           name: tool.name,
           description: tool.description,

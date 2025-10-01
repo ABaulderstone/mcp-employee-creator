@@ -75,6 +75,7 @@ export const handleRunQuery = async (query: string): Promise<MCPResponse> => {
 
   // Validate it's a SELECT query
   const trimmedQuery = query.trim().toUpperCase();
+  console.log('Query ran: ', trimmedQuery);
   if (!trimmedQuery.startsWith('SELECT')) {
     throw new Error('Only SELECT queries are allowed');
   }
