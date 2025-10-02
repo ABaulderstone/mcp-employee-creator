@@ -24,6 +24,11 @@ import {
   handleRunQuery,
   handleGetHighestPaidEmployee,
   executeTool,
+  handleGetEmployeesByPromotionGap,
+  handleGetAveragePromotionInterval,
+  handleGetMostRecentPromotions,
+  handleGetEmployeeById,
+  handleSearchEmployeesByName,
 } from './handlers';
 
 dotenv.config();
@@ -61,6 +66,7 @@ app.post('/tools/list', (req: Request, res: Response) => {
 });
 
 app.post('/tools/call', async (req: Request, res: Response) => {
+  console.log('tool call');
   try {
     const mcpRequest: MCPRequest = req.body;
     const toolName = mcpRequest.params?.name;
@@ -103,6 +109,31 @@ app.post('/tools/call', async (req: Request, res: Response) => {
 
       case 'get_highest_paid_employee':
         response = await handleGetHighestPaidEmployee();
+        break;
+      case 'promotion_gap':
+        response = await handleGetEmployeesByPromotionGap(args.limit);
+        break;
+
+      case 'avg_promotion_interval':
+        response = await handleGetAveragePromotionInterval();
+        break;
+
+      case 'recent_promotions':
+        response = await handleGetMostRecentPromotions(args.limit);
+        break;
+
+      case 'get_employee_by_id':
+        if (!args.id) {
+          throw new Error('id argument is required');
+        }
+        response = await handleGetEmployeeById(args.id);
+        break;
+
+      case 'search_employees_by_name':
+        if (!args.name) {
+          throw new Error('name argument is required');
+        }
+        response = await handleSearchEmployeesByName(args.name);
         break;
 
       default:

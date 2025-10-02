@@ -56,4 +56,67 @@ export const TOOLS: Tool[] = [
       properties: {},
     },
   },
-];
+  {
+    name: 'promotion_gap',
+    description:
+      'List employees ordered by time since their last promotion (or first contract if never promoted). Useful for finding employees longest without promotion.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        limit: {
+          type: 'integer',
+          description: 'How many employees to return (default 10).',
+          minimum: 1,
+        },
+      },
+    },
+  },
+  {
+    name: 'recent_promotions',
+    description:
+      'List the most recently promoted employees, ordered by promotion date descending.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        limit: {
+          type: 'integer',
+          description: 'How many recent promotions to return (default 5).',
+          minimum: 1,
+        },
+      },
+    },
+  },
+  {
+    name: 'avg_promotion_interval',
+    description:
+      'Calculate the average number of days between promotions across all employees.',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+    },
+  },
+  {
+    name: 'get_employee_by_id',
+    description: 'Fetch detailed employee info by ID.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        id: { type: 'integer', description: 'The employee ID' },
+      },
+      required: ['id'],
+    },
+  },
+  {
+    name: 'search_employees_by_name',
+    description: 'Search for employees by partial or full name.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string', description: 'The name to search for' },
+      },
+      required: ['name'],
+    },
+  },
+] as const;
+
+export type ToolName = (typeof TOOLS)[number]['name'];
