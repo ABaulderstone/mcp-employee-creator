@@ -208,19 +208,21 @@ export const handleGetEmployeesByPromotionGap = async (
   const [rows] = await pool.query(query, [limit || 10]);
   const results = rows as any[];
 
+  console.log(results);
+
   if (!results.length) {
     return { content: [{ type: 'text', text: 'No employees found.' }] };
   }
 
   const header = `# Employees Ordered by Time Since Last Promotion`;
-  const tableHeader = `| Employee | Days Since Promotion | Last Promotion |\n|----------|----------------------|----------------|`;
+  const tableHeader = `ID | Employee | Days Since Promotion | Last Promotion |\n|----------|----------------------|----------------|`;
   const tableRows = results
     .map(
       (r) =>
-        `| ${r.first_name} ${r.last_name} | ${r.days_since_promotion} | ${r.last_promotion_date} |`
+        `| ${r.id} | ${r.first_name} ${r.last_name} | ${r.days_since_promotion} | ${r.last_promotion_date} |`
     )
     .join('\n');
-
+  console.log(tableRows);
   return {
     content: [
       { type: 'text', text: `${header}\n\n${tableHeader}\n${tableRows}` },
@@ -274,7 +276,7 @@ export const handleGetMostRecentPromotions = async (
   const tableRows = results
     .map((r) => `| ${r.first_name} ${r.last_name} | ${r.promotion_date} |`)
     .join('\n');
-
+  console.log(tableRows);
   return {
     content: [
       { type: 'text', text: `${header}\n\n${tableHeader}\n${tableRows}` },
